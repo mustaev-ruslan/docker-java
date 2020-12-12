@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: api
+
+api:
+  server:
+    port: ${PORT}
+    host: ${HOST}
+
+server:
+  port: ${api.server.port}

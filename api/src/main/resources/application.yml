@@ -1,11 +1,18 @@
 spring:
   application:
     name: api
+  data:
+    mongodb:
+      uri: ${api.server.db-url}
+  devtools:
+    remote:
+      secret: my_secret
 
 api:
   server:
     port: ${PORT}
     host: ${HOST}
+    db-url: ${MONGO_URL}
 
 server:
   port: ${api.server.port}

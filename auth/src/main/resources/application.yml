@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: auth
+  data:
+    mongodb:
+      uri: ${auth.server.db-url}
+  devtools:
+    remote:
+      secret: my_secret
+
+auth:
+  server:
+    port: ${PORT}
+    host: ${HOST}
+    db-url: ${MONGO_URL}
+
+server:
+  port: ${auth.server.port}

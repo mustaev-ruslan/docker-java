@@ -5,20 +5,44 @@ services:
       context: ./api
       args:
         - workdir=/usr/src/app
-    command: java -jar /usr/src/app/target/api-1.0.0.jar
+    container_name: docker-example-api
+    command: java -jar /usr/src/app/api.jar
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "3002:3002"
     environment:
-      - PORT=3001
+      - PORT=3002
       - HOST=docker-example.com
       - MONGO_URL=mongodb://api_db:27017/api
     depends_on:
       - api_db
+  auth:
+    build:
+      context: ./auth
+      args:
+        - workdir=/usr/src/app
+    container_name: docker-example-auth
+    command: java -jar /usr/src/app/auth.jar
+    restart: unless-stopped
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - HOST=docker-example.com
+      - MONGO_URL=mongodb://auth_db:27017/auth
+    depends_on:
+      - auth_db
   api_db:
     image: mongo:4.4.2
+    container_name: docker-example-api-db
     volumes:
       - mongodb_api:/data/db
+  auth_db:
+    image: mongo:4.4.2
+    container_name: docker-example-auth-db
+    volumes:
+      - mongodb_auth:/data/db
 
 volumes:
   mongodb_api:
+  mongodb_auth:

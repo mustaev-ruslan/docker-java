@@ -15,4 +15,4 @@ COPY . .
 
 RUN mvn install spring-boot:repackage
 
-RUN cp target/*.jar api.jar
+RUN cp target/*.jar auth.jar

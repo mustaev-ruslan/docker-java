@@ -1,5 +1,12 @@
 version: "3.8"
 services:
+  frontend:
+    build: ./frontend
+    container_name: docker-example-frontend
+    command: serve -s build -l 3000
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
   api:
     build:
       context: ./api
@@ -9,9 +16,9 @@ services:
     command: java -jar /usr/src/app/api.jar
     restart: unless-stopped
     ports:
-      - "3002:3002"
+      - "3001:3001"
     environment:
-      - PORT=3002
+      - PORT=3001
       - HOST=docker-example.com
       - MONGO_URL=mongodb://api_db:27017/api
     depends_on:
@@ -25,9 +32,9 @@ services:
     command: java -jar /usr/src/app/auth.jar
     restart: unless-stopped
     ports:
-      - "3003:3003"
+      - "3002:3002"
     environment:
-      - PORT=3003
+      - PORT=3002
       - HOST=docker-example.com
       - MONGO_URL=mongodb://auth_db:27017/auth
     depends_on:

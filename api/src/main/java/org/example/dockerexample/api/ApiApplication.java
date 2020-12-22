@@ -9,6 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -18,29 +19,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApiApplication {
 
+    private final PostRepository postRepository;
+
+    private final RestTemplate restTemplate;
+
     @Value("${api.server.host}")
     private String host;
-
     @Value("${api.server.port}")
     private String port;
-
-    @Value("${api.server.db-url}")
+    @Value("${api.db-url}")
     private String dbUrl;
+    @Value("${api.auth-api-url}")
+    private String authApiUrl;
 
-    private final PostRepository postRepository;
+    public static void main(String[] args) {
+        SpringApplication.run(ApiApplication.class, args);
+    }
 
     @GetMapping("/test")
     public String test() {
         return "Hello from api service on " + host + ":" + port;
     }
 
-    @GetMapping("/addPost")
+    @GetMapping("/add-post")
     public String addPost() {
         Post savedPost = postRepository.save(new Post("hello"));
         return savedPost.toString();
     }
 
-    @GetMapping("/showPosts")
+    @GetMapping("/show-posts")
     public String showPosts() {
         List<Post> posts = postRepository.findAll();
         return posts.stream()
@@ -48,14 +55,21 @@ public class ApiApplication {
                 .reduce("", (a, b) -> a + "<br>" + b);
     }
 
+    @GetMapping("/test-with-current-user")
+    public CurrentUserDto testWithCurrentUser() {
+        UserDto userDto = restTemplate.getForObject(authApiUrl + "/current-userDto", UserDto.class);
+        return new CurrentUserDto(true, userDto);
+    }
+
+    @GetMapping("/api/test-api-data")
+    public ApiDataDto testApiData() {
+        return new ApiDataDto(true);
+    }
+
     @EventListener
     public void onStartup(ApplicationReadyEvent event) {
         log.info("Started api service on " + host + ":" + port);
         log.info("Database url " + dbUrl);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(ApiApplication.class, args);
     }
 
 }

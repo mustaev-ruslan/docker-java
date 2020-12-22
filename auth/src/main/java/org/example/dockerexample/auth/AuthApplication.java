@@ -9,6 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @RestController
@@ -16,18 +17,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthApplication {
 
+    private final RestTemplate restTemplate;
+
     @Value("${auth.server.host}")
     private String host;
 
     @Value("${auth.server.port}")
     private String port;
 
-    @Value("${auth.server.db-url}")
+    @Value("${auth.db-url}")
     private String dbUrl;
+
+    @Value("${auth.api-url}")
+    private String apiUrl;
 
     @GetMapping("/test")
     public String test() {
         return "Hello from auth service on " + host + ":" + port;
+    }
+
+    @GetMapping("/test-with-api-data")
+    public ApiDataDto testWithApiData() {
+        return restTemplate.getForObject(apiUrl + "/test-api-data", ApiDataDto.class);
+    }
+
+    @GetMapping("/api/current-user")
+    public UserDto currentUser() {
+        return new UserDto(1234L, "foo@gmail.com");
     }
 
     @EventListener

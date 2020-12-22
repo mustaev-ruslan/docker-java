@@ -3,7 +3,7 @@ spring:
     name: api
   data:
     mongodb:
-      uri: ${api.server.db-url}
+      uri: ${api.db-url}
   devtools:
     remote:
       secret: my_secret
@@ -12,7 +12,8 @@ api:
   server:
     port: ${PORT}
     host: ${HOST}
-    db-url: ${MONGO_URL}
+  db-url: ${MONGO_URL}
+  auth-api-url: ${AUTH_API_URL}
 
 server:
   port: ${api.server.port}

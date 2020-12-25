@@ -57,7 +57,7 @@ public class ApiApplication {
 
     @GetMapping("/test-with-current-user")
     public CurrentUserDto testWithCurrentUser() {
-        UserDto userDto = restTemplate.getForObject(authApiUrl + "/current-userDto", UserDto.class);
+        UserDto userDto = restTemplate.getForObject(authApiUrl + "/current-user", UserDto.class);
         return new CurrentUserDto(true, userDto);
     }
 

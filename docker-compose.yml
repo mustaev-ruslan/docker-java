@@ -1,7 +1,9 @@
 version: "3.8"
 services:
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
     container_name: docker-example-frontend
     command: serve -s build -l 3000
     restart: unless-stopped
@@ -15,8 +17,6 @@ services:
     container_name: docker-example-api
     command: java -jar /usr/src/app/api.jar
     restart: unless-stopped
-    ports:
-      - "3001:3001"
     environment:
       - PORT=3001
       - HOST=docker-example.com
@@ -34,8 +34,6 @@ services:
     container_name: docker-example-auth
     command: java -jar /usr/src/app/auth.jar
     restart: unless-stopped
-    ports:
-      - "3002:3002"
     environment:
       - PORT=3002
       - HOST=docker-example.com
@@ -68,6 +66,8 @@ services:
       - ./nginx/nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
     depends_on:
       - frontend
+      - api
+      - auth
     networks:
       - docker-example-network
 

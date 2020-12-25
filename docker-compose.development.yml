@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   frontend:
+    build:
+      dockerfile: Dockerfile.dev
     command: npm run start
     environment:
       - CHOKIDAR_USEPOLLING=true
@@ -9,3 +11,16 @@ services:
     tty: true
     volumes:
       - ./frontend/src:/usr/src/app/src
+  api:
+    ports:
+      - "3001:3001"
+    environment:
+      - HOST=docker-example.local
+  auth:
+    ports:
+      - "3002:3002"
+    environment:
+      - HOST=docker-example.local
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf.dev:/etc/nginx/conf.d/nginx.conf

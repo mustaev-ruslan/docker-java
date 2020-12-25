@@ -1,4 +1,4 @@
-package org.example.dockerexample.auth;
+package org.example.dockerexample.api.dto;
 
 import lombok.Value;
 

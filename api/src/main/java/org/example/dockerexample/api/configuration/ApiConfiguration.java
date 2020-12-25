@@ -1,4 +1,4 @@
-package org.example.dockerexample.api;
+package org.example.dockerexample.api.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

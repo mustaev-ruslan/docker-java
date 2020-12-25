@@ -1,4 +1,4 @@
-package org.example.dockerexample.api;
+package org.example.dockerexample.api.dto;
 
 import lombok.Value;
 

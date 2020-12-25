@@ -1,4 +1,4 @@
-package org.example.dockerexample.auth;
+package org.example.dockerexample.auth.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
